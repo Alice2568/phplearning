@@ -57,4 +57,37 @@ asort($mois);
             
         </tbody>
     </table>
+    <?php
+$date = new DateTime("2019-07-14");
+$weekNumber = $date->format("W");
+echo "Le numéro de semaine pour la date 14/07/2019 est : $weekNumber \n";
+$today = new DateTime("now");
+$datefin = new DateTime("2024-12-06");
+$interval = date_diff($today,$datefin);
+echo "fin du module dans : " .$interval ->format("%r%a days");
+
+function is_leap_year($year){
+    if ($year % 400 == 0) 
+     return TRUE; 
+     elseif ($year % 100 == 0) 
+     return FALSE; 
+     elseif ($year % 4 == 0) 
+     return TRUE; 
+     else 
+     return FALSE; 
+}
+if( is_leap_year('2025') == TRUE )
+    echo "\n TRUE ";
+    else
+    echo "\n FALSE ";
+?><br>
+<?php
+    var_dump(checkdate( 17,  32, 2019));
+echo date("h\H i");
+//$nextmonth = mktime(0,0,0, date("m")+1, date("d"), date("Y"));
+//echo "\n".$nextmonth;
+$datem = new DateTime('2024-11-29');
+$nextmonth = $datem->modify('+1 month');
+echo "\n".$nextmonth->format('Y-m-d');
+?>
 </body>
