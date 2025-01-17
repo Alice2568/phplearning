@@ -30,5 +30,6 @@
         Artiste N°<?php echo $myArtist->artist_id ?>
         Nom de l'artiste : <?= $myArtist->artist_name ?>
         Site Internet : <?= $myArtist->artist_url ?>
+        <?= var_dump($myArtist) ?> 
     </body>
 </html>

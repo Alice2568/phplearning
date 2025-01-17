@@ -1,23 +1,18 @@
 <?php
-    // On se connecte à la BDD via notre fichier db.php :
-    require "db.php";
+
+    // on importe le contenu du fichier "db.php"
+    include "db.php";
+    // on exécute la méthode de connexion à notre BDD
     $db = connexionBase();
 
-    // On récupère l'ID passé en paramètre :
-    $id = $_GET["id"];
-
-    // On crée une requête préparée avec condition de recherche :
-    $requete = $db->prepare("SELECT * FROM artist WHERE artist_id=?");
-    // on ajoute l'ID du disque passé dans l'URL en paramètre et on exécute :
-    $requete->execute(array($id));
-
-    // on récupère le 1e (et seul) résultat :
-    $myArtist = $requete->fetch(PDO::FETCH_OBJ);
-
+    // on lance une requête pour chercher toutes les fiches d'artistes
+    $requete = $db->query("SELECT * FROM artist");
+    // on récupère tous les résultats trouvés dans une variable
+    $tableau = $requete->fetchAll(PDO::FETCH_OBJ);
     // on clôt la requête en BDD
     $requete->closeCursor();
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -27,8 +22,24 @@
         <title>PDO - Détail</title>
     </head>
     <body>
-        Artiste N°<?php echo $myArtist->artist_id ?>
-        Nom de l'artiste : <?= $myArtist->artist_name ?>
-        Site Internet : <?= $myArtist->artist_url ?>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <!-- Ici, on ajoute une colonne pour insérer un lien -->
+            <th></th>
+        </tr>
+
+        <?php foreach ($tableau as $artist): ?>
+        <tr>
+            <td><?= $artist->artist_id ?></td>
+            <td><?= $artist->artist_name ?></td>
+            <!-- Ici, on ajoute un lien par artiste pour accéder à sa fiche : -->
+            <td><a href="artist_detail.php?id=<?= $artist->artist_id ?>">Détail</a></td>
+        </tr>
+        <?php endforeach; ?>
+
+    </table>
     </body>
-</html>
+    </html>
