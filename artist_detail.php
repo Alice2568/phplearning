@@ -13,9 +13,10 @@
 
     // on récupère le 1e (et seul) résultat :
     $myArtist = $requete->fetch(PDO::FETCH_OBJ);
-
+    
     // on clôt la requête en BDD
     $requete->closeCursor();
+
 ?>
 
 <!DOCTYPE html>
@@ -27,9 +28,15 @@
         <title>PDO - Détail</title>
     </head>
     <body>
+        <?php if $myArtist = "" ?>
+            <div class="alert alert-success">404 page not found !</div>
+        <?php endif ?>
+        
         Artiste N°<?php echo $myArtist->artist_id ?>
         Nom de l'artiste : <?= $myArtist->artist_name ?>
         Site Internet : <?= $myArtist->artist_url ?>
-        <?= var_dump($myArtist) ?> 
+       
+    
+
     </body>
 </html>
