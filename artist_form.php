@@ -1,3 +1,16 @@
+<?php // On charge l'enregistrement correspondant à l'ID passé en paramètre :
+    require "db.php";
+    $db = connexionBase();
+    $id = isset($_GET["id"]) && is_numeric($_GET["id"]) ? intval($_GET["id"]) : null;
+    if (!$id) {
+        echo "Impossible de modifier une fiche artiste non existente !";
+    }
+    $requete = $db->prepare("SELECT * FROM artist WHERE artist_id=?");
+    $requete->execute(array($_GET["id"]));
+    $myArtist = $requete->fetch(PDO::FETCH_OBJ);
+    $requete->closeCursor();
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

@@ -28,14 +28,14 @@
         <title>PDO - Détail</title>
     </head>
     <body>
-        <?php if $myArtist = "" ?>
+        <?php if (!$myArtist): ?>
             <div class="alert alert-success">404 page not found !</div>
-        <?php endif ?>
+        <?php endif; ?>
         
-        Artiste N°<?php echo $myArtist->artist_id ?>
-        Nom de l'artiste : <?= $myArtist->artist_name ?>
-        Site Internet : <?= $myArtist->artist_url ?>
-       
+        Artiste N°<?php echo $myArtist->artist_id ?><br>
+        Nom de l'artiste : <?= $myArtist->artist_name ?><br>
+        Site Internet : <?= $myArtist->artist_url ?><br>
+        <a href="artist_form.php?id=<?= $myArtist->artist_id ?>">Modifier</a>
     
 
     </body>
