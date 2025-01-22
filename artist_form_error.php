@@ -22,6 +22,7 @@
 <body>
 
     <h1>Artiste n°<?= $myArtist->artist_id; ?></h1>
+    <h2 style="color:red;">Tous les champs doivent être complétés .</h2>
 
     <a href="artists.php">Retour à la liste des artistes</a>
 
