@@ -1,0 +1,15 @@
+-- Active: 1733929630764@@127.0.0.1@3306@Espace_Membres
+DROP DATABASE IF EXISTS Espace_Membres;
+
+CREATE DATABASE Espace_Membres;
+
+USE Espace_Membres;
+
+CREATE TABLE Membres (
+	M_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nom VARCHAR(50),
+    Prénom VARCHAR(50),
+	Email VARCHAR(50) NOT NULL,
+	MDP VARCHAR(50) NOT NULL
+
+);
