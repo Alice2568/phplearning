@@ -1,25 +1,46 @@
 <?php 
 session_start();
-$bdd = new PDO('mysql:host=127.0.0.1:3306;charset=utf8;dbname=Espace_Membres','admin','Afpa1234');
-if(isset($_POST['login'])){
-    if(!empty($_POST['email']) && !empty($_POST['mdp'])){
-        $email = htmlspecialchars($_POST['email']);
-        $mdp = sha1($_POST['mdp']);
-        $insertUser = $bdd->prepare('INSERT INTO Membres(email, mdp)VALUES(?, ?)');
-        $insertUser->execute(array($email, $mdp));
 
-        $recupUser = $bdd->prepare('SELECT * FROM Membres WHERE email = ? AND mdp = ?');
-        $recupUser->execute(array($email, $mdp));
-        if($recupUser->rowCount() > 0){
-            $_SESSION['email'] = $email;
-            $_SESSION['mdp'] = $mdp;
-            $_SESSION['id'] =$recupUser->fetch()['M_ID'];
+$bdd = new PDO('mysql:host=127.0.0.1:3306;charset=utf8;dbname=Espace_Membres','admin','Afpa1234');
+
+if (isset($_POST['inscription'])) {
+    if (!empty($_POST['email']) && !empty($_POST['mdp']) && !empty($_POST['prenom']) && !empty($_POST['nom'])) {
+        $email = htmlspecialchars($_POST['email']);
+        $mdp = password_hash($_POST['mdp'], PASSWORD_DEFAULT); // Plus sécurisé
+        $prenom = htmlspecialchars($_POST['prenom']);
+        $nom = htmlspecialchars($_POST['nom']);
+
+        // Vérifier si l'utilisateur existe déjà
+        $checkUser = $bdd->prepare('SELECT * FROM Membres WHERE email = ?');
+        $checkUser->execute([$email]);
+
+        if ($checkUser->rowCount() == 0) {
+            // Insérer l'utilisateur
+            $insertUser = $bdd->prepare('INSERT INTO Membres(nom, prénom, email, mdp) VALUES(?, ?, ?, ?)');
+            $insertUser->execute([$nom, $prenom, $email, $mdp]);
+
+            echo "Inscription réussie !";
+        } else {
+            echo "Cet email est déjà utilisé.";
         }
 
-       echo $_SESSION['id'];
+        // Récupérer l'utilisateur après insertion
+        $recupUser = $bdd->prepare('SELECT * FROM Membres WHERE email = ?');
+        $recupUser->execute([$email]);
+        $user = $recupUser->fetch();
 
-    }else{
-        echo "Veuillez completer tous les champs";
+        if ($user && password_verify($_POST['mdp'], $user['mdp'])) {
+            $_SESSION['id'] = $user['M_ID']; 
+            $_SESSION['email'] = $email;
+
+            echo "Bienvenue, " . htmlspecialchars($prenom) . "!";
+            require "login_form.php";
+        } else {
+            echo "Erreur lors de la connexion.";
+        }
+
+    } else {
+        echo "Veuillez compléter tous les champs.";
     }
 }
 ?>
