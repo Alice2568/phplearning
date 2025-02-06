@@ -34,7 +34,8 @@ if (isset($_POST['inscription'])) {
             $_SESSION['email'] = $email;
 
             echo "Bienvenue, " . htmlspecialchars($prenom) . "!";
-            require "login_form.php";
+            header  ("location: login_form.php");
+            
         } else {
             echo "Erreur lors de la connexion.";
         }
